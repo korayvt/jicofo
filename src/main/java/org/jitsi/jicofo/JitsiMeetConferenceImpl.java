@@ -276,6 +276,12 @@ public class JitsiMeetConferenceImpl
     private final boolean includeInStatistics;
 
     /**
+     * Indicates if this instance has been destroyed (destroy method called).
+     */
+    private volatile boolean destroyed = false;
+
+
+    /**
      * Creates new instance of {@link JitsiMeetConferenceImpl}.
      *
      * @param roomName name of MUC room that is hosting the conference.
@@ -513,13 +519,16 @@ public class JitsiMeetConferenceImpl
 
         protocolProviderHandler.removeRegistrationListener(this);
 
-        try
+        if(!destroyed)
         {
-            disposeConference();
-        }
-        catch (Exception e)
-        {
-            logger.error("disposeConference error", e);
+            try
+            {
+                disposeConference();
+            }
+            catch (Exception e)
+            {
+                logger.error("disposeConference error", e);
+            }
         }
 
         try
@@ -535,7 +544,7 @@ public class JitsiMeetConferenceImpl
         {
             try
             {
-                jingle.terminateHandlersSessions(this);
+                jingle.terminateHandlersSessions(this, !destroyed);
             }
             catch (Exception e)
             {
@@ -1216,7 +1225,19 @@ public class JitsiMeetConferenceImpl
             return;
         }
 
+        destroyed = true;
+        try
+        {
+            disposeConference();
+        }
+        catch (Exception e)
+        {
+            logger.error("disposeConference error", e);
+        }
+
         chatRoom.destroy(reason, null);
+
+        stop();
     }
 
     /**

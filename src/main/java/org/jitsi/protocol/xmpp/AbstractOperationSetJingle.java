@@ -553,7 +553,7 @@ public abstract class AbstractOperationSetJingle
      * {@inheritDoc}
      */
     @Override
-    public void terminateHandlersSessions(JingleRequestHandler requestHandler)
+    public void terminateHandlersSessions(JingleRequestHandler requestHandler, boolean sendTerminate)
     {
         List<JingleSession> sessions = new ArrayList<>(this.sessions.values());
 
@@ -561,7 +561,7 @@ public abstract class AbstractOperationSetJingle
         {
             if (session.getRequestHandler() == requestHandler)
             {
-                terminateSession(session, Reason.GONE, null, true);
+                terminateSession(session, Reason.GONE, null, sendTerminate);
             }
         }
     }

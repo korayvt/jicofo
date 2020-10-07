@@ -143,5 +143,5 @@ public interface OperationSetJingle
      * @param requestHandler <tt>JingleRequestHandler</tt> instance for which
      *                       all active JingleSessions shall be terminated.
      */
-    void terminateHandlersSessions(JingleRequestHandler requestHandler);
+    void terminateHandlersSessions(JingleRequestHandler requestHandler, boolean sendTerminate);
 }

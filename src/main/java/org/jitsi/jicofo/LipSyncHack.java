@@ -376,8 +376,8 @@ public class LipSyncHack implements OperationSetJingle
      * {@inheritDoc}
      */
     @Override
-    public void terminateHandlersSessions(JingleRequestHandler requestHandler)
+    public void terminateHandlersSessions(JingleRequestHandler requestHandler, boolean sendTerminate)
     {
-        jingleImpl.terminateHandlersSessions(requestHandler);
+        jingleImpl.terminateHandlersSessions(requestHandler, true);
     }
 }
