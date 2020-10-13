@@ -880,6 +880,27 @@ public class ChatRoomImpl
             muc.destroy(reason,
                 alternateAddress != null ?
                     JidCreate.entityBareFrom(alternateAddress) : null);
+
+            if (presenceInterceptor != null)
+            {
+                muc.removePresenceInterceptor(presenceInterceptor);
+            }
+
+            if (memberListener != null)
+            {
+                muc.removeParticipantStatusListener(memberListener);
+            }
+
+            muc.removeParticipantListener(this);
+
+            opSet.removeRoom(this);
+
+            if (logger.isDebugEnabled())
+            {
+                logger.debug(
+                        "Room " + getName() + " is destroyed: " + " with reason "
+                                + reason);
+            }
         }
         catch (XMPPException
                 | XmppStringprepException
